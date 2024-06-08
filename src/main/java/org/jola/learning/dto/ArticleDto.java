@@ -44,10 +44,10 @@ public class ArticleDto {
     @Column(name = "article_published")
     private boolean published;
 
-    @Column(name = "article_readCount")
+    @Column(name = "article_read_count")
     private Long readCount;
 
-    @Column(name = "article_readingTime")
+    @Column(name = "article_reading_time")
     private int readingTime;
 
     @Column(name = "article_body")
