@@ -5,9 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3bdf5b88-fa6d-41ce-866f-648562b8d434" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/jola/learning/dto/ArticleDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/jola/learning/dto/ArticleDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/jola/learning/dto/UserDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/jola/learning/dto/AuthorDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/jola/learning/repository/ArticleDtoRepository.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,6 +38,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -59,8 +58,10 @@
   "keyToString": {
     "Application.SimpleBlogApp.executor": "Coverage",
     "Gradle.Build simpleBlogAPI.executor": "Run",
+    "Gradle.SimpleBlogAPI [:SimpleBlogApp.main()].executor": "Run",
     "Gradle.simpleBlogAPI [:SimpleBlogApp.main()].executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
