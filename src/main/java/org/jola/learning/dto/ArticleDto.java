@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 @Component
@@ -14,7 +15,7 @@ import java.sql.Timestamp;
 @Getter
 @Setter
 @Table(name = "article")
-public class ArticleDto {
+public class ArticleDto implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,10 +37,9 @@ public class ArticleDto {
     @Column(name = "article_description")
     private String description;
 
-    // implement a join here/foreign key
-    @ManyToOne
-    @Column(name = "user_id")
-    private UserDto author;
+    @JoinColumn(name = "author_id")
+//    @Column(name = "author_id")
+    private AuthorDto author;
 
     @Column(name = "article_published")
     private boolean published;

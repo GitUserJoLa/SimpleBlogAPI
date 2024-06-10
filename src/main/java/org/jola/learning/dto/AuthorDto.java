@@ -8,45 +8,48 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
+
 @Component
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@Table( name = "user",
+// "user" seems to be a reserved word so table must have another name
+@Table(name = "author",
         uniqueConstraints = {
             // table constraint
             @UniqueConstraint(
-                    name = "UniqueUsernameAndPassword",
-                    columnNames = {"user_alias", "user_email"}
+                    name = "UniqueAuthoraliasAndPassword",
+                    columnNames = {"author_alias", "author_email"}
             )
         }
     )
-public class UserDto {
+public class AuthorDto implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
+    @Column(name = "author_id")
     private Long id;
 
     @NotNull
-    @Column(name = "user_first_name")
+    @Column(name = "author_firstname")
     private String firstName;
 
     @NotNull
-    @Column(name = "user_last_name")
+    @Column(name = "author_lastname")
     private String lastName;
 
     @NotNull
-    @Column(name = "user_alias")
+    @Column(name = "author_alias")
     private String alias;
 
     @NotNull
-    @Column(name = "user_email")
+    @Column(name = "author_email")
     private String email;
 
     @NotNull
-    @Column(name = "user_password")
+    @Column(name = "author_password")
     private String password;
 }
