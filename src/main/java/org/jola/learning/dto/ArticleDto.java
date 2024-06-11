@@ -38,6 +38,7 @@ public class ArticleDto implements Serializable {
     private String description;
 
     @JoinColumn(name = "author_id")
+    @ManyToOne
 //    @Column(name = "author_id")
     private AuthorDto author;
 
