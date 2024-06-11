@@ -17,15 +17,16 @@ import java.io.Serializable;
 @Getter
 @Setter
 // "user" seems to be a reserved word so table must have another name
-@Table(name = "author",
-        uniqueConstraints = {
-            // table constraint
-            @UniqueConstraint(
-                    name = "UniqueAuthoraliasAndPassword",
-                    columnNames = {"author_alias", "author_email"}
-            )
-        }
-    )
+@Table(name = "author"
+//        ,
+//        uniqueConstraints = {
+//            // table constraint
+//            @UniqueConstraint(
+//                    name = "UniqueAuthoraliasAndPassword",
+//                    columnNames = {"author_alias", "author_email"}
+//            )
+//        }
+)
 public class AuthorDto implements Serializable {
 
     @Id
@@ -42,11 +43,13 @@ public class AuthorDto implements Serializable {
     private String lastName;
 
     @NotNull
-    @Column(name = "author_alias")
+    @Column(name = "author_alias",
+            unique = true)
     private String alias;
 
     @NotNull
-    @Column(name = "author_email")
+    @Column(name = "author_email",
+            unique = true)
     private String email;
 
     @NotNull
