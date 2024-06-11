@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AuthorDtoRepository extends CrudRepository<AuthorDto, Long> {
-    public Optional<AuthorDto> findByAlias(String alias);
-    public List<AuthorDto> findByFirstName(String firstName);
-    public List<AuthorDto> findByLastName(String lastName);
+    Optional<AuthorDto> findByAlias(String alias);
+    List<AuthorDto> findByFirstName(String firstName);
+    List<AuthorDto> findByLastName(String lastName);
 }
