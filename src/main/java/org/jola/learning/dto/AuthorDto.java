@@ -17,16 +17,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 // "user" seems to be a reserved word so table must have another name
-@Table(name = "author"
-//        ,
-//        uniqueConstraints = {
-//            // table constraint
-//            @UniqueConstraint(
-//                    name = "UniqueAuthoraliasAndPassword",
-//                    columnNames = {"author_alias", "author_email"}
-//            )
-//        }
-)
+@Table(name = "author")
 public class AuthorDto implements Serializable {
 
     @Id
