@@ -31,7 +31,8 @@ public class ArticleDto implements Serializable {
 //    https://www.baeldung.com/hibernate-notnull-vs-nullable
     @NotNull
 //    column constraint unique is based only on one field
-    @Column(name = "article_title", unique = true)
+    @Column(name = "article_title",
+            unique = true)
     private String title;
 
     @Column(name = "article_description")
@@ -39,7 +40,7 @@ public class ArticleDto implements Serializable {
 
     @JoinColumn(name = "author_id")
     @ManyToOne
-//    @Column(name = "author_id")
+    @NotNull
     private AuthorDto author;
 
     @Column(name = "article_published")
@@ -51,7 +52,17 @@ public class ArticleDto implements Serializable {
     @Column(name = "article_reading_time")
     private int readingTime;
 
-    @Column(name = "article_body")
+//    Using the @Lob annotation on the description field, we instruct Hibernate to manage this field
+//    using the PostgreSQL TEXT type.
+//    Note that when we use Hibernate with PostgreSQL, the storage mechanics become unusual when handling
+//    a String attribute annotated with @Lob. [...]
+//    For instance, PostgreSQL stores the contents of a column annotated with @Lob in a separate table,
+//    the column itself will only store a UID for each entry in that table. Therefore, this behaviour
+//    may lead to information loss. To solve this problem, we can either use @Column(columnDefinition="TEXT")
+//    along with the @Lob annotation or use only @Column(columnDefinition = "TEXT").
+//    https://www.baeldung.com/jpa-annotation-postgresql-text-type
+    @Column(name = "article_body",
+            columnDefinition = "TEXT")
     private String textBody;
 
     private Timestamp timeStamp;
