@@ -17,7 +17,7 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:1.18.32")
 
     implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-security:3.3.0")
+//    implementation("org.springframework.boot:spring-boot-starter-security:3.3.0")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     // input validation
     implementation("org.springframework.boot:spring-boot-starter-validation:3.3.0")
