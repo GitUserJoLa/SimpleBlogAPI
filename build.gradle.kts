@@ -21,10 +21,14 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     // input validation
     implementation("org.springframework.boot:spring-boot-starter-validation:3.3.0")
-
+    // database
     implementation("org.postgresql:postgresql:42.7.3")
+    // utility
+    implementation("com.google.guava:guava:33.2.1-jre")
 
-    // test implementations
+
+
+//    test implementations
     testCompileOnly("org.projectlombok:lombok:1.18.32")
     testAnnotationProcessor("org.projectlombok:lombok:1.18.32")
 
