@@ -10,4 +10,5 @@ public interface AuthorDtoRepository extends CrudRepository<AuthorDto, Long> {
     Optional<AuthorDto> findByAlias(String alias);
     List<AuthorDto> findByFirstName(String firstName);
     List<AuthorDto> findByLastName(String lastName);
+    List<AuthorDto> findByFirstNameAndLastNameAllIgnoreCase(String firstName, String lastName);
 }

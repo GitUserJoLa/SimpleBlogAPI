@@ -19,25 +19,17 @@ public class AuthorController {
     @Autowired
     private AuthorService authorService;
 
-//    @GetMapping(value = "/authors")
-    public ResponseEntity<List<AuthorDto>> getAllAuthors() {
-        List<AuthorDto> authorList = authorService.getAllAuthors();
-        if (!(authorList.isEmpty())) return new ResponseEntity<>(authorList, HttpStatus.OK);
-        else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
     @GetMapping(value = "/authors")
-    public ResponseEntity<List<AuthorDto>> getAuthorByName(
+    public ResponseEntity<List<AuthorDto>> getAuthors(
             @RequestParam(name = "lastname", required = false) String lastName,
             @RequestParam(name = "firstname", required = false) String firstName
     ) {
-        // is getAllAuthors() mapping redundant?
-        // keeping the GetMapping will cause mapping error
-        if (lastName == null && firstName == null) return this.getAllAuthors();
+        List<AuthorDto> authorList = authorService.getAuthors(lastName, firstName);
 
-        List<AuthorDto> authorList = authorService.getAuthorByName(lastName, firstName);
-        if (!(authorList.isEmpty())) return new ResponseEntity<>(authorList, HttpStatus.OK);
-        else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if (authorList.isEmpty())
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        else
+            return new ResponseEntity<>(authorList, HttpStatus.OK);
     }
 
     @GetMapping(value = "/authors/{alias}")

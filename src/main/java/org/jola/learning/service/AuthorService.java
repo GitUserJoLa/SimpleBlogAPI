@@ -5,9 +5,7 @@ import org.jola.learning.repository.AuthorDtoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class AuthorService {
@@ -15,10 +13,20 @@ public class AuthorService {
     @Autowired
     private AuthorDtoRepository authorRepository;
 
-    public List<AuthorDto> getAllAuthors(){
-        List<AuthorDto> authorList = new ArrayList<>();
-        authorRepository.findAll().forEach(authorList::add); //findAll() returns iterable, convert each element and add to list
-        return authorList;
+    public List<AuthorDto> getAuthors(String lastName, String firstName) {
+
+        if (firstName != null && lastName != null)
+            return authorRepository.findByFirstNameAndLastNameAllIgnoreCase(firstName, lastName);
+        else if(firstName != null)
+            return authorRepository.findByFirstName(firstName);
+        else if(lastName != null)
+            return authorRepository.findByLastName(lastName);
+        else {
+            List<AuthorDto> authorList = new ArrayList<>();
+            authorRepository.findAll()
+                    .forEach(authorList::add);
+            return authorList;
+        }
     }
 
     public Optional<AuthorDto> getAuthorByAlias(String alias) {
