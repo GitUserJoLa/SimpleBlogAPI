@@ -67,4 +67,22 @@ public class ArticleDto implements Serializable {
 
     private Timestamp timeStamp;
     private String[] hashTags;
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof ArticleDto))
+            return false;
+
+        ArticleDto article = (ArticleDto) o;
+        return article.id.equals(this.id);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + this.id.hashCode();
+        return result;
+    }
 }

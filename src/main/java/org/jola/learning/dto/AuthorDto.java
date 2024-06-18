@@ -46,4 +46,22 @@ public class AuthorDto implements Serializable {
     @NotNull
     @Column(name = "author_password")
     private String password;
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof AuthorDto))
+            return false;
+
+        AuthorDto author = (AuthorDto) o;
+        return author.id.equals(this.id);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + this.id.hashCode();
+        return result;
+    }
 }
