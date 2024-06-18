@@ -18,9 +18,9 @@ public class AuthorService {
         if (firstName != null && lastName != null)
             return authorRepository.findByFirstNameAndLastNameAllIgnoreCase(firstName, lastName);
         else if(firstName != null)
-            return authorRepository.findByFirstName(firstName);
+            return authorRepository.findByFirstNameAllIgnoreCase(firstName);
         else if(lastName != null)
-            return authorRepository.findByLastName(lastName);
+            return authorRepository.findByLastNameAllIgnoreCase(lastName);
         else {
             List<AuthorDto> authorList = new ArrayList<>();
             authorRepository.findAll()
@@ -30,6 +30,6 @@ public class AuthorService {
     }
 
     public Optional<AuthorDto> getAuthorByAlias(String alias) {
-        return authorRepository.findByAlias(alias);
+        return authorRepository.findByAliasAllIgnoreCase(alias);
     }
 }
