@@ -9,6 +9,7 @@ import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 @Component
 @Entity
@@ -45,6 +46,8 @@ public class AuthorDto implements Serializable {
 
     @NotNull
     @Column(name = "author_password")
+    // overhaul necessary. pw should never be sent to the client on request!
+    // should also be stored hashed in db and never be clear text
     private String password;
 
     @Override
@@ -55,13 +58,35 @@ public class AuthorDto implements Serializable {
             return false;
 
         AuthorDto author = (AuthorDto) o;
-        return author.id.equals(this.id);
+
+        // When the entity identifier is null, equality is only guaranteed for the same object references.
+        // Otherwise, no transient object is equal to any other transient or persisted object.
+        // That’s why the identifier equality check is done only if the current Object identifier is not null.
+        // https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        return this.getId() != null &&
+                Objects.equals(author.getId(), this.getId());
     }
 
     @Override
     public int hashCode() {
         int result = 17;
-        result = 31 * result + this.id.hashCode();
+        // this.id.hashCode() throws NPE
+//        result = 31 * result + this.id.hashCode();
+
+        // doesn't throw NPE at compile time
+        // hash(varargs...)
+        // The Objects class has a static method that takes an arbitrary number of objects and returns
+        // a hash code for them. This method, named hash, lets you write one-line hashCode methods [...].
+        // Unfortunately, they run more slowly because they entail array creation to pass a variable
+        // number of arguments, as well as boxing and unboxing if any of the arguments are of primitive type.
+        // This style of hash function is recommended for use only in situations where performance is not critical.
+        // Joshua Bloch: Effective Java, p. 53; 3rd Edition, 2018
+//        result = 31 * result + Objects.hash(this.getId());
+
+        // doesn't throw NPE at compile time
+        // hashCode(singlearg)
+        result = 31 * result + Objects.hashCode(this.getId());
+
         return result;
-    }
+    } // getClass().hashCode() returns the same hashcode for all class instances
 }

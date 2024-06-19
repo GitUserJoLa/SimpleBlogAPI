@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Objects;
 
 @Component
 @Entity
@@ -23,7 +24,7 @@ public class ArticleDto implements Serializable {
     @Column(name = "article_id")
     private Long id;
 
-//    As a rule of thumb, we should prefer the @NotNull annotation
+    //    As a rule of thumb, we should prefer the @NotNull annotation
 //    over the @Column(nullable = false) annotation. This way, we make sure the validation takes place
 //    before Hibernate sends any insert or update SQL queries to the database.
 //    Also, it’s usually better to rely on the standard rules defined in the Bean Validation,
@@ -52,7 +53,7 @@ public class ArticleDto implements Serializable {
     @Column(name = "article_reading_time")
     private int readingTime;
 
-//    Using the @Lob annotation on the description field, we instruct Hibernate to manage this field
+    //    Using the @Lob annotation on the description field, we instruct Hibernate to manage this field
 //    using the PostgreSQL TEXT type.
 //    Note that when we use Hibernate with PostgreSQL, the storage mechanics become unusual when handling
 //    a String attribute annotated with @Lob. [...]
@@ -76,13 +77,15 @@ public class ArticleDto implements Serializable {
             return false;
 
         ArticleDto article = (ArticleDto) o;
-        return article.id.equals(this.id);
+
+        return this.getId() != null &&
+                Objects.equals(article.getId(), this.getId());
     }
 
     @Override
     public int hashCode() {
         int result = 17;
-        result = 31 * result + this.id.hashCode();
+        result = 31 * result + Objects.hashCode(this.getId());
         return result;
     }
 }
