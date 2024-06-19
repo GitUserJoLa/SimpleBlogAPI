@@ -85,8 +85,20 @@ public class AuthorDto implements Serializable {
 
         // doesn't throw NPE at compile time
         // hashCode(singlearg)
+        // returns the hash code of a non-null argument and 0 for a null argument
         result = 31 * result + Objects.hashCode(this.getId());
 
         return result;
     } // getClass().hashCode() returns the same hashcode for all class instances
+
+    @Override
+    public String toString(){
+        return "AuthorDto{" +
+                "id=" + id +
+                ", alias='" + alias + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName=" + lastName + '\'' +
+                ", email=" + email +
+        '}';
+    }
 }

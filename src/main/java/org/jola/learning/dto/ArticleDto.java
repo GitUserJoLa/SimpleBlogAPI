@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.Objects;
 
 @Component
@@ -87,5 +88,21 @@ public class ArticleDto implements Serializable {
         int result = 17;
         result = 31 * result + Objects.hashCode(this.getId());
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ArticleDto{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", author=" + author.toString() + '\'' +
+                ", published=" + published + '\'' +
+                ", readCount=" + readCount + '\'' +
+                ", readingTime=" + readingTime + '\'' +
+                ", textBody=" + textBody + '\'' +
+                ", timeStamp=" + timeStamp + '\'' +
+                ", hashTags=" + Arrays.toString(hashTags) +
+                '}';
     }
 }
