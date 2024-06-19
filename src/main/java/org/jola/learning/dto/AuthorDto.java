@@ -2,10 +2,8 @@ package org.jola.learning.dto;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.NaturalId;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
@@ -24,6 +22,7 @@ public class AuthorDto implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "author_id")
+    @Setter(AccessLevel.NONE)
     private Long id;
 
     @NotNull
@@ -39,14 +38,17 @@ public class AuthorDto implements Serializable {
             unique = true)
     private String alias;
 
+//    @NaturalId // how tf do is this implemented
     @NotNull
     @Column(name = "author_email",
             unique = true)
+    @Setter(AccessLevel.NONE)
     private String email;
 
     @NotNull
     @Column(name = "author_password")
-    // overhaul necessary. pw should never be sent to the client on request!
+    @Getter(AccessLevel.NONE)
+    // overhaul necessary. (SOLVED: pw should never be sent to the client on request!)
     // should also be stored hashed in db and never be clear text
     private String password;
 
@@ -54,23 +56,27 @@ public class AuthorDto implements Serializable {
     public boolean equals(Object o) {
         if (o == this)
             return true;
-        if (!(o instanceof AuthorDto))
+
+        // When the entity identifier is null, equality is only guaranteed for the same object references.
+        // https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        // If we use the instanceof operator on any object that’s null, it returns false.
+        // We also don’t need a null check when using an instanceof operator.
+        // https://www.baeldung.com/java-instanceof
+        if (this.getId() == null ||
+                !(o instanceof AuthorDto))
             return false;
 
         AuthorDto author = (AuthorDto) o;
 
-        // When the entity identifier is null, equality is only guaranteed for the same object references.
-        // Otherwise, no transient object is equal to any other transient or persisted object.
-        // That’s why the identifier equality check is done only if the current Object identifier is not null.
-        // https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
-        return this.getId() != null &&
-                Objects.equals(author.getId(), this.getId());
+        //related problem to hashCode: this.getId() is always null
+        return Objects.equals(author.getId(), this.getId());
     }
 
     @Override
     public int hashCode() {
         int result = 17;
         // this.id.hashCode() throws NPE
+        // why is id.hashCode() null in the first place?
 //        result = 31 * result + this.id.hashCode();
 
         // doesn't throw NPE at compile time
@@ -83,11 +89,12 @@ public class AuthorDto implements Serializable {
         // Joshua Bloch: Effective Java, p. 53; 3rd Edition, 2018
 //        result = 31 * result + Objects.hash(this.getId());
 
-        // doesn't throw NPE at compile time
+        // doesn't throw NPE at compile time, however this.getId() still returns null. Why??
         // hashCode(singlearg)
         // returns the hash code of a non-null argument and 0 for a null argument
         result = 31 * result + Objects.hashCode(this.getId());
 
+        // as this.getId() is always null all instances of the class have the same hash code
         return result;
     } // getClass().hashCode() returns the same hashcode for all class instances
 
