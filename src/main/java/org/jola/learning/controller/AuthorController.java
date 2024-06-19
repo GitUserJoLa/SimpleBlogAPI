@@ -4,11 +4,9 @@ import org.jola.learning.dto.AuthorDto;
 import org.jola.learning.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -43,5 +41,12 @@ public class AuthorController {
                         () -> new ResponseEntity<>(HttpStatus.NOT_FOUND)
                 );
     }
+
+//    @PostMapping(
+//            value="/authors/signup",
+//            consumes= MediaType.APPLICATION_JSON_VALUE)
+//    public void addNewAuthor(@RequestBody AuthorDto author){
+//        authorService.addNewAuthor(author);
+//    }
 
 }
