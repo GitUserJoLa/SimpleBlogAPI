@@ -51,6 +51,9 @@ public class AuthorController {
 //                );
     }
 
+
+    // pay attention to case sensitivity in creation as searches in db are non-CS
+    // design choice
 //    @PostMapping(
 //            value="/authors/signup",
 //            consumes= MediaType.APPLICATION_JSON_VALUE)
