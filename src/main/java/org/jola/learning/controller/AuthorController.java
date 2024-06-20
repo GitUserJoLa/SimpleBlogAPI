@@ -41,6 +41,7 @@ public class AuthorController {
             return new ResponseEntity<>(authorList, HttpStatus.OK);
 
         // throws 500:internal server errors due to non-case-sensitivity in search
+        // if there are entries for (e.g.) udk and UDK db will return both which cannot be saved to an optional<>
 //        Optional<AuthorDto> author = authorService.getAuthorByAlias(alias);
 //        // map()-idiom is used with lists and list-like containers and expects a lambda function
 //        return author.map(

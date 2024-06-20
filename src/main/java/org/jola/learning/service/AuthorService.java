@@ -18,9 +18,9 @@ public class AuthorService {
         if (firstName != null && lastName != null)
             return authorRepository.findByFirstNameAndLastNameAllIgnoreCase(firstName, lastName);
         else if (firstName != null)
-            return authorRepository.findByFirstNameAllIgnoreCase(firstName);
+            return authorRepository.findByFirstNameIgnoreCase(firstName);
         else if (lastName != null)
-            return authorRepository.findByLastNameAllIgnoreCase(lastName);
+            return authorRepository.findByLastNameIgnoreCase(lastName);
         else {
             List<AuthorDto> authorList = new ArrayList<>();
             authorRepository.findAll()
@@ -31,12 +31,12 @@ public class AuthorService {
 
     public List<AuthorDto> getAuthorByAlias(String alias) {
 
-        return authorRepository.findByAliasAllIgnoreCase(alias);
+        return authorRepository.findByAliasIgnoreCase(alias);
     }
 
 //    public void addNewAuthor(AuthorDto author) {
-//        //check for email. if present in db refuse to save dataset
-//        //check for alias. if present in db refuse to save dataset
+//        //check for email in caller function. if present in db refuse to save dataset
+//        //check for alias in caller function. if present in db refuse to save dataset
 //        authorRepository.save(author);
 //    }
 
