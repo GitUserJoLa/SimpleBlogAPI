@@ -8,8 +8,8 @@ import java.util.List;
 
 //refactor methods to use AllIgnoreCase
 public interface AuthorDtoRepository extends CrudRepository<AuthorDto, Long> {
-    List<AuthorDto> findByAliasAllIgnoreCase(String alias);
-    List<AuthorDto> findByFirstNameAllIgnoreCase(String firstName);
-    List<AuthorDto> findByLastNameAllIgnoreCase(String lastName);
+    List<AuthorDto> findByAliasIgnoreCase(String alias);
+    List<AuthorDto> findByFirstNameIgnoreCase(String firstName);
+    List<AuthorDto> findByLastNameIgnoreCase(String lastName);
     List<AuthorDto> findByFirstNameAndLastNameAllIgnoreCase(String firstName, String lastName);
 }
