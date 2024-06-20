@@ -31,15 +31,24 @@ public class AuthorController {
     }
 
     @GetMapping(value = "/authors/{alias}")
-    public ResponseEntity<AuthorDto> getAuthorByAlias(@PathVariable String alias) {
-        Optional<AuthorDto> author = authorService.getAuthorByAlias(alias);
-        // map()-idiom is used with lists and list-like containers and expects a lambda function
-        return author.map(
-                        authorDto -> new ResponseEntity<>(authorDto, HttpStatus.OK)
-                ).
-                orElseGet(
-                        () -> new ResponseEntity<>(HttpStatus.NOT_FOUND)
-                );
+    public ResponseEntity<List<AuthorDto>> getAuthorByAlias(@PathVariable String alias) {
+
+        List<AuthorDto> authorList = authorService.getAuthorByAlias(alias);
+
+        if (authorList.isEmpty())
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        else
+            return new ResponseEntity<>(authorList, HttpStatus.OK);
+
+        // throws 500:internal server errors due to non-case-sensitivity in search
+//        Optional<AuthorDto> author = authorService.getAuthorByAlias(alias);
+//        // map()-idiom is used with lists and list-like containers and expects a lambda function
+//        return author.map(
+//                        authorDto -> new ResponseEntity<>(authorDto, HttpStatus.OK)
+//                ).
+//                orElseGet(
+//                        () -> new ResponseEntity<>(HttpStatus.NOT_FOUND)
+//                );
     }
 
 //    @PostMapping(

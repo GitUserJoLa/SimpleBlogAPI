@@ -29,7 +29,7 @@ public class AuthorService {
         }
     }
 
-    public Optional<AuthorDto> getAuthorByAlias(String alias) {
+    public List<AuthorDto> getAuthorByAlias(String alias) {
 
         return authorRepository.findByAliasAllIgnoreCase(alias);
     }
