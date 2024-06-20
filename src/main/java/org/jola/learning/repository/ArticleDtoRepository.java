@@ -7,11 +7,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ArticleDtoRepository extends CrudRepository<ArticleDto, Long> {
-    Optional<ArticleDto> findByTitle(String title);
+    Optional<ArticleDto> findByTitleAllIgnoreCase(String title);
     List<ArticleDto> findByReadCount(Long readCount);
-    List<ArticleDto> findByHashTags(String[] hashTags);
+//    List<ArticleDto> findByHashTags(String[] hashTags);
     List<ArticleDto> findByAuthorId(Long id);
-    List<ArticleDto> findByAuthorAlias(String alias);
-    List<ArticleDto> findByAuthorLastName(String lastName);
-    List<ArticleDto> findByAuthorFirstName(String firstName);
+    List<ArticleDto> findByAuthorAliasAllIgnoreCase(String alias);
+    List<ArticleDto> findByAuthorLastNameAllIgnoreCase(String lastName);
+    List<ArticleDto> findByAuthorFirstNameAllIgnoreCase(String firstName);
+    List<ArticleDto> findByAuthorFirstNameAndAuthorLastNameAllIgnoreCase(String firstName, String lastName);
+
 }
