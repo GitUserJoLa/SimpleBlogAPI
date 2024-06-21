@@ -22,7 +22,7 @@ public class ArticleDto implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 //    @Setter(AccessLevel.NONE)
-    @Column(name = "article_id")
+    @Column(name = "id")
     private Long id;
 
     //    As a rule of thumb, we should prefer the @NotNull annotation
@@ -33,11 +33,11 @@ public class ArticleDto implements Serializable {
 //    https://www.baeldung.com/hibernate-notnull-vs-nullable
     @NotNull
 //    column constraint unique is based only on one field
-    @Column(name = "article_title",
+    @Column(name = "title",
             unique = true)
     private String title;
 
-    @Column(name = "article_description")
+    @Column(name = "description")
     private String description;
 
     @JoinColumn(name = "author_id")
@@ -45,13 +45,13 @@ public class ArticleDto implements Serializable {
     @NotNull
     private AuthorDto author;
 
-    @Column(name = "article_published")
+    @Column(name = "published")
     private boolean published;
 
-    @Column(name = "article_read_count")
+    @Column(name = "read_count")
     private Long readCount;
 
-    @Column(name = "article_reading_time")
+    @Column(name = "reading_time")
     private int readingTime;
 
     //    Using the @Lob annotation on the description field, we instruct Hibernate to manage this field
@@ -63,7 +63,7 @@ public class ArticleDto implements Serializable {
 //    may lead to information loss. To solve this problem, we can either use @Column(columnDefinition="TEXT")
 //    along with the @Lob annotation or use only @Column(columnDefinition = "TEXT").
 //    https://www.baeldung.com/jpa-annotation-postgresql-text-type
-    @Column(name = "article_body",
+    @Column(name = "content",
             columnDefinition = "TEXT")
     private String textBody;
 
