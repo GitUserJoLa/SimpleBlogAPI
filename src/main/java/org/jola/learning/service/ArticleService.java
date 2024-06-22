@@ -5,15 +5,30 @@ import org.jola.learning.repository.ArticleDtoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ArticleService {
 
     @Autowired
-    ArticleDtoRepository articleDtoRepository;
+    ArticleDtoRepository articleRepository;
 
+    public List<ArticleDto> getAllArticles() {
+        List<ArticleDto> articleList = new ArrayList<>();
+        articleRepository.findAll()
+                .forEach(articleList::add);
+        return articleList;
+
+        // compiler warning: unchecked or unsafe operations
+//        return new ArrayList<>((Collection) articleRepository.findAll());
+    }
+
+    public List<ArticleDto> getAllArticlesByAuthorId(Long id) {
+        return new ArrayList<>(articleRepository.findByAuthorId(id));
+    }
+    
     public List<ArticleDto> getAllArticlesByAuthorAlias(String alias) {
-        return null;
+        return new ArrayList<>(articleRepository.findByAuthorAliasIgnoreCase(alias));
     }
 }
