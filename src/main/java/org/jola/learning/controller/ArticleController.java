@@ -17,13 +17,28 @@ public class ArticleController {
     @Autowired
     ArticleService articleService;
 
+    @GetMapping(value="/articles")
+    public ResponseEntity<List<ArticleDto>> getAllArticles(){
+        List<ArticleDto> articleList = articleService.getAllArticles();
+        return createResponseEntity(articleList);
+    }
+
+    @GetMapping(value="/authors/{id}/articles")
+    public ResponseEntity<List<ArticleDto>> getAllArticlesByAuthorId(@PathVariable Long id){
+        List<ArticleDto> articleList = articleService.getAllArticlesByAuthorId(id);
+        return createResponseEntity(articleList);
+    }
+
     @GetMapping(value="/authors/{alias}/articles")
     public ResponseEntity<List<ArticleDto>> getAllArticlesByAuthorAlias(@PathVariable String alias){
         List<ArticleDto> articleList = articleService.getAllArticlesByAuthorAlias(alias);
+        return createResponseEntity(articleList);
+    }
 
-        if (articleList.isEmpty())
+    private  ResponseEntity<List<ArticleDto>> createResponseEntity(List<ArticleDto> list){
+        if (list.isEmpty())
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         else
-            return new ResponseEntity<>(articleList, HttpStatus.OK);
+            return new ResponseEntity<>(list, HttpStatus.OK);
     }
 }
