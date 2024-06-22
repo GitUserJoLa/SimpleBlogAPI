@@ -21,20 +21,20 @@ public class ArticleDto implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Setter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
     @Column(name = "id")
     private Long id;
 
     //    As a rule of thumb, we should prefer the @NotNull annotation
-//    over the @Column(nullable = false) annotation. This way, we make sure the validation takes place
-//    before Hibernate sends any insert or update SQL queries to the database.
-//    Also, it’s usually better to rely on the standard rules defined in the Bean Validation,
-//    rather than letting the database handle the validation logic.
-//    https://www.baeldung.com/hibernate-notnull-vs-nullable
+    //    over the @Column(nullable = false) annotation. This way, we make sure the validation takes place
+    //    before Hibernate sends any insert or update SQL queries to the database.
+    //    Also, it’s usually better to rely on the standard rules defined in the Bean Validation,
+    //    rather than letting the database handle the validation logic.
+    //    https://www.baeldung.com/hibernate-notnull-vs-nullable
     @NotNull
-//    column constraint unique is based only on one field
     @Column(name = "title",
-            unique = true)
+            unique = true,
+            nullable = false)
     private String title;
 
     @Column(name = "description")
@@ -45,13 +45,17 @@ public class ArticleDto implements Serializable {
     @NotNull
     private AuthorDto author;
 
-    @Column(name = "published")
+    @NotNull
+    @Column(name = "published",
+            nullable = false,
+            columnDefinition = "boolean default false")
     private boolean published;
 
-    @Column(name = "read_count")
+    @Column(name = "readcount",
+            columnDefinition = "bigint default 0")
     private Long readCount;
 
-    @Column(name = "reading_time")
+    @Column(name = "readingtime")
     private int readingTime;
 
     //    Using the @Lob annotation on the description field, we instruct Hibernate to manage this field
@@ -65,22 +69,23 @@ public class ArticleDto implements Serializable {
 //    https://www.baeldung.com/jpa-annotation-postgresql-text-type
     @Column(name = "content",
             columnDefinition = "TEXT")
-    private String textBody;
+    private String content;
 
-    private Timestamp timeStamp;
+    @Column(name = "timestamp")
+    private Timestamp timestamp;
+
+    @Column(name = "hashtags")
     private String[] hashTags;
 
     @Override
     public boolean equals(Object o) {
         if (o == this)
             return true;
-        if (!(o instanceof ArticleDto))
+        if (this.getId() == null ||
+                !(o instanceof ArticleDto))
             return false;
-
         ArticleDto article = (ArticleDto) o;
-
-        return this.getId() != null &&
-                Objects.equals(article.getId(), this.getId());
+        return Objects.equals(article.getId(), this.getId());
     }
 
     @Override
@@ -100,8 +105,8 @@ public class ArticleDto implements Serializable {
                 ", published=" + published + '\'' +
                 ", readCount=" + readCount + '\'' +
                 ", readingTime=" + readingTime + '\'' +
-                ", textBody=" + textBody + '\'' +
-                ", timeStamp=" + timeStamp + '\'' +
+                ", textBody=" + content + '\'' +
+                ", timeStamp=" + timestamp + '\'' +
                 ", hashTags=" + Arrays.toString(hashTags) +
                 '}';
     }

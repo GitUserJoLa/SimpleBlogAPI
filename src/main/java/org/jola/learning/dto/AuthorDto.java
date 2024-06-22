@@ -3,9 +3,7 @@ package org.jola.learning.dto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.hibernate.annotations.NaturalId;
 import org.springframework.stereotype.Component;
-
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -21,32 +19,37 @@ public class AuthorDto implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "author_id")
+    @Column(name = "id")
     @Setter(AccessLevel.NONE)
     private Long id;
 
     @NotNull
-    @Column(name = "author_firstname")
+    @Column(name = "firstname",
+            nullable = false)
     private String firstName;
 
     @NotNull
-    @Column(name = "author_lastname")
+    @Column(name = "lastname",
+            nullable = false)
     private String lastName;
 
     @NotNull
-    @Column(name = "author_alias",
-            unique = true)
+    @Column(name = "alias",
+            unique = true,
+            nullable = false)
     private String alias;
 
-//    @NaturalId // how tf do is this implemented
+    //    @NaturalId // how tf is this implemented
     @NotNull
-    @Column(name = "author_email",
-            unique = true)
+    @Column(name = "email",
+            unique = true,
+            nullable = false)
     @Setter(AccessLevel.NONE)
     private String email;
 
     @NotNull
-    @Column(name = "author_password")
+    @Column(name = "password",
+            nullable = false)
     @Getter(AccessLevel.NONE)
     // overhaul necessary. (SOLVED: pw should never be sent to the client on request!)
     // should also be stored hashed in db and never be clear text
@@ -65,22 +68,18 @@ public class AuthorDto implements Serializable {
         if (this.getId() == null ||
                 !(o instanceof AuthorDto))
             return false;
-
         AuthorDto author = (AuthorDto) o;
-
-        //related problem to hashCode: this.getId() is always null
         return Objects.equals(author.getId(), this.getId());
     }
 
     @Override
     public int hashCode() {
         int result = 17;
-        // this.id.hashCode() throws NPE
-        // why is id.hashCode() null in the first place?
+        // this.id.hashCode() throws NPE at compile time
+        // probably not null on run time -> needs validation
 //        result = 31 * result + this.id.hashCode();
 
-        // doesn't throw NPE at compile time
-        // hash(varargs...)
+        // Objects.hash(varargs...)
         // The Objects class has a static method that takes an arbitrary number of objects and returns
         // a hash code for them. This method, named hash, lets you write one-line hashCode methods [...].
         // Unfortunately, they run more slowly because they entail array creation to pass a variable
@@ -89,23 +88,20 @@ public class AuthorDto implements Serializable {
         // Joshua Bloch: Effective Java, p. 53; 3rd Edition, 2018
 //        result = 31 * result + Objects.hash(this.getId());
 
-        // doesn't throw NPE at compile time, however this.getId() still returns null. Why??
-        // hashCode(singlearg)
+        // Objects.hashCode(singlearg)
         // returns the hash code of a non-null argument and 0 for a null argument
         result = 31 * result + Objects.hashCode(this.getId());
-
-        // as this.getId() is always null all instances of the class have the same hash code
         return result;
     } // getClass().hashCode() returns the same hashcode for all class instances
 
     @Override
-    public String toString(){
+    public String toString() {
         return "AuthorDto{" +
                 "id=" + id +
                 ", alias='" + alias + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName=" + lastName + '\'' +
                 ", email=" + email +
-        '}';
+                '}';
     }
 }
