@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 public class ArticleController {
@@ -44,6 +43,25 @@ public class ArticleController {
         ArticleAddedResponseDto response = articleService.addArticle(article);
         return new ResponseEntity<>(response.getArticle(), HttpStatus.OK);
     }
+
+    @PutMapping(
+            value = "/authors/{id}/articles",
+            consumes = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<ArticleDto> updateArticle(@RequestBody ArticleDto article){
+        ArticleAddedResponseDto response = articleService.updateArticle(article);
+        return new ResponseEntity<>(response.getArticle(), HttpStatus.OK);
+    }
+
+    @DeleteMapping(
+            value = "/authors/{id}/articles",
+            consumes = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<String> deleteArticle(@RequestBody ArticleDto article){
+        String response = articleService.deleteArticle(article);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
 
     private ResponseEntity<List<ArticleDto>> createResponseEntity(List<ArticleDto> list) {
         if (list.isEmpty())

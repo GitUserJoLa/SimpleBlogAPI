@@ -70,4 +70,12 @@ public class ArticleService {
 //        return responseDto;
 //    }
 
+    public ArticleAddedResponseDto updateArticle(ArticleDto article) {
+        return addArticle(article);
+    }
+
+    public String deleteArticle(ArticleDto article) {
+        articleRepository.delete(article);
+        return "Article successfully deleted";
+    }
 }
