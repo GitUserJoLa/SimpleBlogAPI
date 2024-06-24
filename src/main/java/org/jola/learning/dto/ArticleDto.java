@@ -43,6 +43,7 @@ public class ArticleDto implements Serializable {
     @JoinColumn(name = "author_id")
     @ManyToOne
     @NotNull
+    @Setter(AccessLevel.NONE)
     private AuthorDto author;
 
     @NotNull
