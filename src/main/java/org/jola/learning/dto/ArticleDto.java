@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Arrays;
 import java.util.Objects;
 
 @Component
@@ -52,12 +51,13 @@ public class ArticleDto implements Serializable {
             columnDefinition = "boolean default false")
     private boolean published;
 
+    // make nullable?
     @Column(name = "readcount",
             columnDefinition = "bigint default 0")
     private Long readCount;
 
     @Column(name = "readingtime")
-    private int readingTime;
+    private Integer readingTime;
 
 //    Using the @Lob annotation on the description field, we instruct Hibernate to manage this field
 //    using the PostgreSQL TEXT type.
@@ -96,19 +96,4 @@ public class ArticleDto implements Serializable {
         return result;
     }
 
-//    @Override
-//    public String toString() {
-//        return "ArticleDto{" +
-//                "id=" + id +
-//                ", title='" + title + '\'' +
-//                ", description='" + description + '\'' +
-//                ", author=" + author.toString() + '\'' +
-//                ", published=" + published + '\'' +
-//                ", readCount=" + readCount + '\'' +
-//                ", readingTime=" + readingTime + '\'' +
-//                ", textBody=" + content + '\'' +
-//                ", timeStamp=" + timestamp + '\'' +
-//                ", hashTags=" + Arrays.toString(hashTags) +
-//                '}';
-//    }
 }
