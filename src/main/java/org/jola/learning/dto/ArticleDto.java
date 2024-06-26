@@ -59,7 +59,7 @@ public class ArticleDto implements Serializable {
     @Column(name = "readingtime")
     private int readingTime;
 
-    //    Using the @Lob annotation on the description field, we instruct Hibernate to manage this field
+//    Using the @Lob annotation on the description field, we instruct Hibernate to manage this field
 //    using the PostgreSQL TEXT type.
 //    Note that when we use Hibernate with PostgreSQL, the storage mechanics become unusual when handling
 //    a String attribute annotated with @Lob. [...]
@@ -96,19 +96,19 @@ public class ArticleDto implements Serializable {
         return result;
     }
 
-    @Override
-    public String toString() {
-        return "ArticleDto{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", author=" + author.toString() + '\'' +
-                ", published=" + published + '\'' +
-                ", readCount=" + readCount + '\'' +
-                ", readingTime=" + readingTime + '\'' +
-                ", textBody=" + content + '\'' +
-                ", timeStamp=" + timestamp + '\'' +
-                ", hashTags=" + Arrays.toString(hashTags) +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "ArticleDto{" +
+//                "id=" + id +
+//                ", title='" + title + '\'' +
+//                ", description='" + description + '\'' +
+//                ", author=" + author.toString() + '\'' +
+//                ", published=" + published + '\'' +
+//                ", readCount=" + readCount + '\'' +
+//                ", readingTime=" + readingTime + '\'' +
+//                ", textBody=" + content + '\'' +
+//                ", timeStamp=" + timestamp + '\'' +
+//                ", hashTags=" + Arrays.toString(hashTags) +
+//                '}';
+//    }
 }

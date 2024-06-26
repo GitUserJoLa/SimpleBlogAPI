@@ -1,5 +1,6 @@
 package org.jola.learning.controller;
 
+import jakarta.validation.ConstraintViolationException;
 import org.jola.learning.dto.ArticleAddedResponseDto;
 import org.jola.learning.dto.ArticleDto;
 import org.jola.learning.service.ArticleService;
@@ -39,18 +40,39 @@ public class ArticleController {
             value = "/authors/{id}/articles",
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<ArticleDto> addArticle(@RequestBody ArticleDto article) {
-        ArticleAddedResponseDto response = articleService.addArticle(article);
-        return new ResponseEntity<>(response.getArticle(), HttpStatus.OK);
+    public ResponseEntity<ArticleAddedResponseDto> addArticle(@RequestBody ArticleDto article) {
+        // Job of controller:
+        // 1. Validate the inputs and payload
+        // 2. Call the service
+        // 3. Handle the exceptions from the service and map it to relevant HTTP response
+        try {
+            ArticleDto articleDto = articleService.addArticle(article);
+            ArticleAddedResponseDto articleAddedResponseDto = new ArticleAddedResponseDto(
+                    articleDto,
+                    "Article was successfully created"
+            );
+            return new ResponseEntity<>(articleAddedResponseDto, HttpStatus.OK);
+        } catch (ConstraintViolationException exp) {
+            ArticleAddedResponseDto articleAddedResponseDto = new ArticleAddedResponseDto(
+                    null,
+                    "Article was not successfully created due to validation errors"
+
+            );
+            return new ResponseEntity<>(articleAddedResponseDto, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping(
             value = "/authors/{id}/articles",
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<ArticleDto> updateArticle(@RequestBody ArticleDto article){
-        ArticleAddedResponseDto response = articleService.updateArticle(article);
-        return new ResponseEntity<>(response.getArticle(), HttpStatus.OK);
+    public ResponseEntity<ArticleAddedResponseDto> updateArticle(@RequestBody ArticleDto article){
+        ArticleDto articleDto = articleService.updateArticle(article);
+        ArticleAddedResponseDto articleAddedResponseDto = new ArticleAddedResponseDto(
+                articleDto,
+                "Article was successfully created"
+        );
+        return new ResponseEntity<>(articleAddedResponseDto, HttpStatus.OK);
     }
 
     @DeleteMapping(
