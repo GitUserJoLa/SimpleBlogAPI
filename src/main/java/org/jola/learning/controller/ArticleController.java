@@ -4,13 +4,14 @@ import jakarta.validation.ConstraintViolationException;
 import org.jola.learning.dto.ArticleAddedResponseDto;
 import org.jola.learning.dto.ArticleDto;
 import org.jola.learning.service.ArticleService;
+import org.postgresql.util.PSQLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
+import java.sql.SQLException;
 import java.util.List;
 
 @RestController
@@ -24,7 +25,7 @@ public class ArticleController {
             @RequestParam(name = "authorId", required = false) Long authorId,
             @RequestParam(name = "authorAlias", required = false) String authorAlias
     ) {
-        List<ArticleDto> articleList = Collections.emptyList();
+        List<ArticleDto> articleList;
 
         if (authorId == null && authorAlias == null)
             articleList = articleService.getAllArticles();
@@ -55,8 +56,32 @@ public class ArticleController {
         } catch (ConstraintViolationException exp) {
             ArticleAddedResponseDto articleAddedResponseDto = new ArticleAddedResponseDto(
                     null,
-                    "Article was not successfully created due to validation errors"
+                    "ConstraintViolationException: Article was not successfully created due to validation fail"
 
+            );
+            return new ResponseEntity<>(articleAddedResponseDto, HttpStatus.BAD_REQUEST);
+        }
+        // when trying to post an article (without id) which has the same title as an article already in db,
+        // runtime says:
+        // org.postgresql.util.PSQLException: ERROR: duplicate key value violates unique constraint "uk_1r3ncw58gm0na08iitnywbww1"
+        //  Detail: Key (title)=(Sitting on sofas) already exists.
+
+//        catch (PSQLException exp){
+//            // compiler says:
+//            // error: exception PSQLException is never thrown in body of corresponding try statement
+//            ArticleAddedResponseDto articleAddedResponseDto = new ArticleAddedResponseDto(
+//                    null,
+//                    "duplicate key value violates unique constraint: title already exists"
+//            );
+//            return new ResponseEntity<>(articleAddedResponseDto, HttpStatus.BAD_REQUEST);
+//        }
+        catch (Exception exp) {
+            exp.printStackTrace();
+            // Caused by: org.postgresql.util.PSQLException: ERROR: duplicate key value violates unique constraint "uk_1r3ncw58gm0na08iitnywbww1"
+            //  Detail: Key (title)=(Sitting on sofas) already exists.
+            ArticleAddedResponseDto articleAddedResponseDto = new ArticleAddedResponseDto(
+                    null,
+                    "duplicate key value violates unique constraint: title already exists"
             );
             return new ResponseEntity<>(articleAddedResponseDto, HttpStatus.BAD_REQUEST);
         }
@@ -66,11 +91,11 @@ public class ArticleController {
             value = "/authors/{id}/articles",
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<ArticleAddedResponseDto> updateArticle(@RequestBody ArticleDto article){
+    public ResponseEntity<ArticleAddedResponseDto> updateArticle(@RequestBody ArticleDto article) {
         ArticleDto articleDto = articleService.updateArticle(article);
         ArticleAddedResponseDto articleAddedResponseDto = new ArticleAddedResponseDto(
                 articleDto,
-                "Article was successfully created"
+                "Article was successfully updated"
         );
         return new ResponseEntity<>(articleAddedResponseDto, HttpStatus.OK);
     }
@@ -79,7 +104,7 @@ public class ArticleController {
             value = "/authors/{id}/articles",
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<String> deleteArticle(@RequestBody ArticleDto article){
+    public ResponseEntity<String> deleteArticle(@RequestBody ArticleDto article) {
         String response = articleService.deleteArticle(article);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
