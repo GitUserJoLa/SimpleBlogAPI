@@ -11,8 +11,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @RestController
 public class ArticleController {
@@ -46,6 +47,7 @@ public class ArticleController {
         // 1. Validate the inputs and payload
         // 2. Call the service
         // 3. Handle the exceptions from the service and map it to relevant HTTP response
+        Logger logger = Logger.getAnonymousLogger();
         try {
             ArticleDto articleDto = articleService.addArticle(article);
             ArticleAddedResponseDto articleAddedResponseDto = new ArticleAddedResponseDto(
@@ -54,31 +56,17 @@ public class ArticleController {
             );
             return new ResponseEntity<>(articleAddedResponseDto, HttpStatus.OK);
         } catch (ConstraintViolationException exp) {
+            // one or more fields violate constraints on the fields
+            logger.log(Level.SEVERE, "ConstraintViolationException was thrown");
             ArticleAddedResponseDto articleAddedResponseDto = new ArticleAddedResponseDto(
                     null,
-                    "ConstraintViolationException: Article was not successfully created due to validation fail"
+                    "ConstraintViolationException: Article could not be created due to validation fail"
 
             );
             return new ResponseEntity<>(articleAddedResponseDto, HttpStatus.BAD_REQUEST);
-        }
-        // when trying to post an article (without id) which has the same title as an article already in db,
-        // runtime says:
-        // org.postgresql.util.PSQLException: ERROR: duplicate key value violates unique constraint "uk_1r3ncw58gm0na08iitnywbww1"
-        //  Detail: Key (title)=(Sitting on sofas) already exists.
-
-//        catch (PSQLException exp){
-//            // compiler says:
-//            // error: exception PSQLException is never thrown in body of corresponding try statement
-//            ArticleAddedResponseDto articleAddedResponseDto = new ArticleAddedResponseDto(
-//                    null,
-//                    "duplicate key value violates unique constraint: title already exists"
-//            );
-//            return new ResponseEntity<>(articleAddedResponseDto, HttpStatus.BAD_REQUEST);
-//        }
-        catch (Exception exp) {
-            exp.printStackTrace();
-            // Caused by: org.postgresql.util.PSQLException: ERROR: duplicate key value violates unique constraint "uk_1r3ncw58gm0na08iitnywbww1"
-            //  Detail: Key (title)=(Sitting on sofas) already exists.
+        } catch (PSQLException exp) {
+            // database throws exception when violating unique constraint
+            logger.log(Level.SEVERE, "PSQLException was thrown");
             ArticleAddedResponseDto articleAddedResponseDto = new ArticleAddedResponseDto(
                     null,
                     "duplicate key value violates unique constraint: title already exists"
@@ -92,12 +80,22 @@ public class ArticleController {
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<ArticleAddedResponseDto> updateArticle(@RequestBody ArticleDto article) {
-        ArticleDto articleDto = articleService.updateArticle(article);
-        ArticleAddedResponseDto articleAddedResponseDto = new ArticleAddedResponseDto(
-                articleDto,
-                "Article was successfully updated"
-        );
-        return new ResponseEntity<>(articleAddedResponseDto, HttpStatus.OK);
+        Logger logger = Logger.getAnonymousLogger();
+        try {
+            ArticleDto articleDto = articleService.updateArticle(article);
+            ArticleAddedResponseDto articleAddedResponseDto = new ArticleAddedResponseDto(
+                    articleDto,
+                    "Article was successfully updated"
+            );
+            return new ResponseEntity<>(articleAddedResponseDto, HttpStatus.OK);
+        } catch (Exception exp) {
+            logger.log(Level.SEVERE, "PSQLException was thrown");
+            ArticleAddedResponseDto articleAddedResponseDto = new ArticleAddedResponseDto(
+                    null,
+                    "duplicate key value violates unique constraint: title already exists"
+            );
+            return new ResponseEntity<>(articleAddedResponseDto, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @DeleteMapping(

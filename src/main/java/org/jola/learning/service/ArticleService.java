@@ -2,6 +2,7 @@ package org.jola.learning.service;
 
 import org.jola.learning.dto.ArticleDto;
 import org.jola.learning.repository.ArticleDtoRepository;
+import org.postgresql.util.PSQLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,13 +37,13 @@ public class ArticleService {
         return new ArrayList<>(articleRepository.findByAuthorAliasIgnoreCase(alias));
     }
 
-    public ArticleDto addArticle(ArticleDto article) {
+    public ArticleDto addArticle(ArticleDto article) throws PSQLException {
         if (article.isPublished() && article.getTimestamp() == null)
             article.setTimestamp(new Timestamp(System.currentTimeMillis()));
         return articleRepository.save(article);
     }
 
-    public ArticleDto updateArticle(ArticleDto article) {
+    public ArticleDto updateArticle(ArticleDto article) throws PSQLException {
         // problem is receiving an incomplete json (controller) and turning this into an object with null values
         // existing values in db will be overwritten by null/default values
         Optional<ArticleDto> articlePulled = articleRepository.findById(article.getId());
@@ -55,7 +56,8 @@ public class ArticleService {
         if (article.getDescription() == null)
             article.setDescription(articlePulled.get().getDescription());
         // author - no setter, needs to be provided by client or will throw error
-        // published - never null, needs to be provided by client
+        if (!article.isPublished())
+            article.setPublished((articlePulled.get().isPublished()));
         if (article.getReadCount() == null)
             article.setReadCount(articlePulled.get().getReadCount());
         if (article.getReadingTime() == null)

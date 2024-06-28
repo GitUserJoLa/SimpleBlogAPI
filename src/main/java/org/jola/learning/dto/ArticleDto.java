@@ -51,12 +51,12 @@ public class ArticleDto implements Serializable {
             columnDefinition = "boolean default false")
     private boolean published;
 
-    // make nullable?
     @Column(name = "readcount",
             columnDefinition = "bigint default 0")
     private Long readCount;
 
-    @Column(name = "readingtime")
+    @Column(name = "readingtime",
+            columnDefinition = "int default 1")
     private Integer readingTime;
 
 //    Using the @Lob annotation on the description field, we instruct Hibernate to manage this field
