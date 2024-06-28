@@ -80,6 +80,7 @@ public class ArticleDto implements Serializable {
 
     @Override
     public boolean equals(Object o) {
+
         if (o == this)
             return true;
         if (this.getId() == null ||
@@ -91,6 +92,7 @@ public class ArticleDto implements Serializable {
 
     @Override
     public int hashCode() {
+
         int result = 17;
         result = 31 * result + Objects.hashCode(this.getId());
         return result;

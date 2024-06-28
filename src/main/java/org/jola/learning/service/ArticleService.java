@@ -18,32 +18,34 @@ public class ArticleService {
     ArticleDtoRepository articleRepository;
 
     public List<ArticleDto> getAllArticles() {
+
         List<ArticleDto> articleList = new ArrayList<>();
         articleRepository.findAll()
                 .forEach(
                         articleList::add
                 );
         return articleList;
-
-        // compiler warning: unchecked or unsafe operations
-//        return new ArrayList<>((Collection) articleRepository.findAll());
     }
 
     public List<ArticleDto> getAllArticlesByAuthorId(Long id) {
+
         return new ArrayList<>(articleRepository.findByAuthorId(id));
     }
 
     public List<ArticleDto> getAllArticlesByAuthorAlias(String alias) {
+
         return new ArrayList<>(articleRepository.findByAuthorAliasIgnoreCase(alias));
     }
 
     public ArticleDto addArticle(ArticleDto article) throws PSQLException {
+
         if (article.isPublished() && article.getTimestamp() == null)
             article.setTimestamp(new Timestamp(System.currentTimeMillis()));
         return articleRepository.save(article);
     }
 
     public ArticleDto updateArticle(ArticleDto article) throws PSQLException {
+
         // problem is receiving an incomplete json (controller) and turning this into an object with null values
         // existing values in db will be overwritten by null/default values
         Optional<ArticleDto> articlePulled = articleRepository.findById(article.getId());
@@ -73,6 +75,7 @@ public class ArticleService {
     }
 
     public String deleteArticle(ArticleDto article) {
+
         articleRepository.delete(article);
         return "Article successfully deleted";
     }

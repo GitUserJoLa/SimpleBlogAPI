@@ -39,7 +39,6 @@ public class AuthorDto implements Serializable {
             nullable = false)
     private String alias;
 
-    //    @NaturalId // how tf is this implemented
     @NotNull
     @Column(name = "email",
             unique = true,
@@ -57,6 +56,7 @@ public class AuthorDto implements Serializable {
 
     @Override
     public boolean equals(Object o) {
+
         if (o == this)
             return true;
 
@@ -74,6 +74,7 @@ public class AuthorDto implements Serializable {
 
     @Override
     public int hashCode() {
+
         int result = 17;
         // this.id.hashCode() throws NPE at compile time
         // probably not null on run time -> needs validation
@@ -88,20 +89,9 @@ public class AuthorDto implements Serializable {
         // Joshua Bloch: Effective Java, p. 53; 3rd Edition, 2018
 //        result = 31 * result + Objects.hash(this.getId());
 
-        // Objects.hashCode(singlearg)
+        // Objects.hashCode(singleArg)
         // returns the hash code of a non-null argument and 0 for a null argument
         result = 31 * result + Objects.hashCode(this.getId());
         return result;
     } // getClass().hashCode() returns the same hashcode for all class instances
-
-    @Override
-    public String toString() {
-        return "AuthorDto{" +
-                "id=" + id +
-                ", alias='" + alias + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName=" + lastName + '\'' +
-                ", email=" + email +
-                '}';
-    }
 }

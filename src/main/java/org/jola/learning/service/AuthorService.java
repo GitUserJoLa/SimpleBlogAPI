@@ -33,12 +33,4 @@ public class AuthorService {
 
         return authorRepository.findByAliasIgnoreCase(alias);
     }
-
-//    public void addNewAuthor(AuthorDto author) {
-//        //check for email in caller function. if present in db refuse to save dataset
-//        //check for alias in caller function. if present in db refuse to save dataset
-//        authorRepository.save(author);
-//    }
-
-
 }

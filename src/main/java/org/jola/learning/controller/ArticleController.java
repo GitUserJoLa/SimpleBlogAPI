@@ -26,6 +26,7 @@ public class ArticleController {
             @RequestParam(name = "authorId", required = false) Long authorId,
             @RequestParam(name = "authorAlias", required = false) String authorAlias
     ) {
+        
         List<ArticleDto> articleList;
 
         if (authorId == null && authorAlias == null)
@@ -43,6 +44,7 @@ public class ArticleController {
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<ArticleAddedResponseDto> addArticle(@RequestBody ArticleDto article) {
+
         // Job of controller:
         // 1. Validate the inputs and payload
         // 2. Call the service
@@ -80,6 +82,7 @@ public class ArticleController {
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<ArticleAddedResponseDto> updateArticle(@RequestBody ArticleDto article) {
+
         Logger logger = Logger.getAnonymousLogger();
         try {
             ArticleDto articleDto = articleService.updateArticle(article);
@@ -103,12 +106,13 @@ public class ArticleController {
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<String> deleteArticle(@RequestBody ArticleDto article) {
+
         String response = articleService.deleteArticle(article);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-
     private ResponseEntity<List<ArticleDto>> createResponseEntity(List<ArticleDto> list) {
+
         if (list.isEmpty())
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         else

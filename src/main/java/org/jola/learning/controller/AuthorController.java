@@ -1,6 +1,5 @@
 package org.jola.learning.controller;
 
-import org.jola.learning.dto.ArticleDto;
 import org.jola.learning.dto.AuthorDto;
 import org.jola.learning.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +20,7 @@ public class AuthorController {
             @RequestParam(name = "lastname", required = false) String lastName,
             @RequestParam(name = "firstname", required = false) String firstName
     ) {
+
         List<AuthorDto> authorList = authorService.getAuthors(lastName, firstName);
         return createResponseEntity(authorList);
     }
@@ -33,20 +33,10 @@ public class AuthorController {
     }
 
     private ResponseEntity<List<AuthorDto>> createResponseEntity(List<AuthorDto> list) {
+
         if (list.isEmpty())
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         else
             return new ResponseEntity<>(list, HttpStatus.OK);
     }
-
-
-    // pay attention to case sensitivity in creation as searches in db are non-CS
-    // design choice
-//    @PostMapping(
-//            value="/authors/signup",
-//            consumes= MediaType.APPLICATION_JSON_VALUE)
-//    public void addNewAuthor(@RequestBody AuthorDto author){
-//        authorService.addNewAuthor(author);
-//    }
-
 }
